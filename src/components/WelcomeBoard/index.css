@@ -22,6 +22,6 @@
   cursor: pointer;
 }
 .fade {
-  opacity: 0;
+  display: none;
   transition: all 1s linear;
 }
