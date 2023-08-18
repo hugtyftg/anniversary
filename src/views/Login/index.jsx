@@ -1,14 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './index.less';
-import { FlowBorder, GradientBorder } from '../../components';
 import Background from '../../components/Background';
 import WelcomeBoard from '../../components/WelcomeBoard';
 import {Heart} from '../../components/Heart';
 import { flushSync } from 'react-dom';
+import PubSub from 'pubsub-js';
+import Card from '../../components/Card';
 export default function Login() {
+  // 显示card
+  let [cardOpacity, setCardOpacity] = useState(0);
+  const token = PubSub.subscribe('showCard', (msg, data) => {
+    if (data === true) {
+      setCardOpacity(1);
+    }
+  })
+  // heart相关状态
+  const pageRef = useRef(null);
   const heartColors = ['lightcoral', 'pink', 'red', 'orange', 'yellow', 'lightgreen', 'lightblue', 'lightpurple'];
   const heartRef = useRef(null);
-  const pageRef = useRef(null);
   let [existHeart, setExistHeart] = useState(false);
   let [heartX, setHeartX] = useState(0);
   let [heartY, setHeartY] = useState(0);
@@ -80,6 +89,11 @@ export default function Login() {
   return (
     <div className='login' onClick={createHeart} ref={pageRef}>
       <Background/>
+      <div className="card" style={{
+        opacity: cardOpacity
+      }}>
+        <Card/>
+      </div>
       <div className="welcome">
         <WelcomeBoard 
           title={'Welcome to World of MMY & SYY!'}
@@ -87,8 +101,6 @@ export default function Login() {
         />
       </div>
       {existHeart ? <Heart ref={heartRef} size={heartSize} x={heartX} y={heartY} color={heartColor}/> : ''}
-      {/* <FlowBorder/>
-      <GradientBorder/> */}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import Glass from '../Glass';
 import './index.less';
+import { publish } from 'pubsub-js';
 export default function WelcomeBoard(props) {
   const boardRef = useRef(null);
   const {title, btnInfo} = props;
@@ -8,7 +9,7 @@ export default function WelcomeBoard(props) {
     let currentClassName = boardRef.current.className;
     if (!/fade/.test(currentClassName)) {
       boardRef.current.className += ' fade';      
-      console.log(boardRef.current.className)
+      publish('showCard', true);
     }
   }
   return (
