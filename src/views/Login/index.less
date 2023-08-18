@@ -11,3 +11,18 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+.heartfade {
+  animation: heartfade 2s ease-out 1;
+  animation-fill-mode: forwards;
+}
+@keyframes heartfade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 0;
+  }
+}
