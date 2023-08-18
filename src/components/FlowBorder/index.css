@@ -1,0 +1,44 @@
+.flow-border {
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+.flow-border .box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: repeating-conic-gradient(from var(--startAngle), lightblue 0%, lightblue 5%, transparent 5%, transparent 40%, lightblue 50%);
+  animation: flow 4s linear infinite;
+  border-radius: 20px;
+}
+.flow-border .box::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-conic-gradient(from var(--startAngle), pink 0%, pink 5%, transparent 5%, transparent 40%, pink 50%);
+  animation: flow 4s linear infinite;
+  border-radius: 20px;
+  animation-delay: -1s;
+}
+.flow-border .box::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  background-color: #f4f4f8;
+  border-radius: 15px;
+  border: 8px solid #f4f4f8;
+}
+@property --startAngle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes flow {
+  0% {
+    --startAngle: 0deg;
+  }
+  100% {
+    --startAngle: 360deg;
+  }
+}

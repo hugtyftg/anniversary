@@ -1,0 +1,40 @@
+.background {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: pink;
+}
+.background .container {
+  position: absolute;
+  width: 120%;
+  height: 100%;
+  background: url('../../assets/img/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.background .container #scene {
+  position: absolute;
+  inset: 0;
+}
+.background .scene .layer#moon img {
+  position: absolute;
+  right: 25vw;
+  top: 10vh;
+  width: 10vw;
+}
+.background .scene .layer#cloud img {
+  position: absolute;
+  left: 10vw;
+  top: -15vh;
+  width: 50vw;
+}
+.fade {
+  opacity: 0;
+  transition: all 1s linear;
+}
