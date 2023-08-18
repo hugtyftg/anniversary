@@ -7,6 +7,8 @@ import { flushSync } from 'react-dom';
 import PubSub from 'pubsub-js';
 import Card from '../../components/Card';
 export default function Login() {
+  // 音频
+  const audioRef = useRef(null);
   // 显示card
   let [cardOpacity, setCardOpacity] = useState(0);
   const token = PubSub.subscribe('showCard', (msg, data) => {
@@ -26,6 +28,8 @@ export default function Login() {
   let heartSize = 25;
   // 创建一个heart
   const createHeart = (e) => {
+    let audioTag = audioRef.current;
+    audioTag.play();
     // 由于只有一个heart，所以节流，有heart在移动的时候，点击页面不会对当前移动的heart产生影响
     if (!heartMove) {
       let offsetX = heartSize * 0.5
@@ -96,10 +100,13 @@ export default function Login() {
       </div>
       <div className="welcome">
         <WelcomeBoard 
-          title={'Welcome to World of MMY & SYY!'}
+        //  & SYY!
+          title={'Welcome to World of MMY'}
           btnInfo={'Start Roaming!'}
         />
       </div>
+      <audio ref={audioRef} src="src/assets/music/fallingyou.mp3" 
+      loop preload='auto'></audio>
       {existHeart ? <Heart ref={heartRef} size={heartSize} x={heartX} y={heartY} color={heartColor}/> : ''}
     </div>
   )
