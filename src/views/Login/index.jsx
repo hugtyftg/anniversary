@@ -6,24 +6,11 @@ import {Heart} from '../../components/Heart';
 import { flushSync } from 'react-dom';
 import PubSub from 'pubsub-js';
 import Card from '../../components/Card';
+import { cardTitles, cardContents } from './word';
 export default function Login() {
   // 音频
   const audioRef = useRef(null);
   /* card */
-  const cardTitles = ['2017 开封', '2018 郑州', '2018 上海', '2018 厦门', 
-  '2021 南京', '2021 济南', '2022 南京', '2022 长沙', '2023 广州', '2023 - ∞'];
-  const cardContents = useMemo(() => [
-    '当时很自闭的我遇到了很社牛的你',
-    '一起去听讲座，我鼓起勇气告白',
-    '高考后一起去迪士尼',
-    '和你在鼓浪屿看海看天',
-    '在夫子庙许愿读研结束异地（成功！',
-    '终于有时间去你上学的城市',
-    '毕业旅行再来南京逛吃！',
-    '开启长沙快乐读研（tongju）生活',
-    '广州塔应该也觉得我们很般配',
-    '跟你在一起的每分每秒我都会珍藏',
-  ], )
   const cardPhotoUrls = Array.from({length: cardTitles.length}, (v, i) => `photo${i}.jpg`);
   let [cardIndex, setCardIndex] = useState(0);
   let [cardTitle, setCardTitle] = useState(cardTitles[cardIndex]);
@@ -40,23 +27,36 @@ export default function Login() {
   // 定时器中改变当前展示的card index
   useEffect(() => {
     if (cardOpacity === 1) {
+      console.log('opacity');
       if (cardTimer.current === null) {
         cardTimer.current = setInterval(() => {
-          if (cardIndex !== cardTitles.length) {
-            setCardIndex(cardIndex => cardIndex + 1);
-          } else {
-            clearInterval(cardTimer.current);
-            cardTimer.current = null;
-          }
+          // 拿到的始终是第一次存在链表里面的cardIndex初始值，也就是0，
+          // 所以不能在setXXX外部写判断条件，而是应该在setXXX里面进行判断，确定返回什么值
+          // if (cardIndex !== cardTitles.length - 1) {
+          //   setCardIndex(cardIndex => cardIndex + 1);
+          // } else {
+          //   clearInterval(cardTimer.current);
+          //   cardTimer.current = null;
+          // }
+          setCardIndex(cardIndex => {
+            if (cardIndex < cardTitles.length - 1) {
+              return cardIndex + 1;
+            } else {
+              clearInterval(cardTimer.current);
+              cardTimer.current = null;
+              return cardTitles.length - 1;
+            }
+          })
         }, 5000);
       }
     }
-  }, [cardOpacity, cardIndex, cardTitles.length])
-  // card index变化的时候改变title和content
+  }, [cardOpacity, cardTitles.length])
+  // card index变化的时候改变photo title和content
   useEffect(() => {
+    setCardPhotoUrl(cardPhotoUrls[cardIndex]);
     setCardTitle(cardTitles[cardIndex]);
     setCardContent(cardContents[cardIndex]); 
-  }, [cardIndex, cardContents, cardTitles])
+  }, [cardIndex, cardContents, cardTitles, cardPhotoUrls])
   
   /* heart */
   // heart相关状态

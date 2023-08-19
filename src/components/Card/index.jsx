@@ -16,7 +16,7 @@ export default function Card({cardTitle, cardContent, cardWidth, cardPhotoUrl}) 
         </GradientBorder>
       </div>
       <FlowBorder width={borderWidth} height={FlowBorderHeight} 
-      layerImgUrl={`src/assets/img/${cardPhotoUrl ?? 'photo.jpg'}`}>
+      layerImgUrl={`src/assets/img/${cardPhotoUrl ?? 'photo0.jpg'}`}>
       </FlowBorder>
     </div>
   )

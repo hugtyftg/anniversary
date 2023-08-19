@@ -12,7 +12,7 @@ export default function Background() {
     <div className='background'>
       <div className="container">
         <div className="scene" id='scene' ref={sceneRef}>
-          <div className="layer" data-depth-x="-0.5" id="moon"><img src="src/assets/img/moon2.png" alt="moon" /></div>
+          <div className="layer" data-depth-x="-0.5" id="moon"><img src="src/assets/img/moon.png" alt="moon" /></div>
           <div className="layer" data-depth-x="0.8" id="cloud"><img src="src/assets/img/cloud.png" alt="cloud" /></div>
         </div>
       </div>
