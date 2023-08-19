@@ -96,13 +96,12 @@ export default function Login() {
       <div className="card" style={{
         opacity: cardOpacity
       }}>
-        <Card/>
+        <Card cardTitle={'2023 广州'} cardContent={'广州塔下的我们看起来真的非常般配'}/>
       </div>
       <div className="welcome">
         <WelcomeBoard 
-        //  & SYY!
-          title={'Welcome to World of MMY'}
-          btnInfo={'Start Roaming!'}
+          title={'遇见你之后，静谧的世界充满色彩和音韵'}
+          btnInfo={'MMY & SYY的回忆'}
         />
       </div>
       <audio ref={audioRef} src="src/assets/music/fallingyou.mp3" 
