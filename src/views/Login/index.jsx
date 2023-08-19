@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './index.less';
 import Background from '../../components/Background';
 import WelcomeBoard from '../../components/WelcomeBoard';
@@ -6,9 +6,17 @@ import {Heart} from '../../components/Heart';
 import { flushSync } from 'react-dom';
 import PubSub from 'pubsub-js';
 import Card from '../../components/Card';
+import { cardTitles, cardContents } from './word';
 export default function Login() {
   // 音频
   const audioRef = useRef(null);
+  /* card */
+  const cardPhotoUrls = Array.from({length: cardTitles.length}, (v, i) => `photo${i}.jpg`);
+  let [cardIndex, setCardIndex] = useState(0);
+  let [cardTitle, setCardTitle] = useState(cardTitles[cardIndex]);
+  let [cardContent, setCardContent] = useState(cardContents[cardIndex]);
+  let [cardPhotoUrl, setCardPhotoUrl] = useState(cardPhotoUrls[cardIndex]);
+  const cardTimer = useRef(null);
   // 显示card
   let [cardOpacity, setCardOpacity] = useState(0);
   const token = PubSub.subscribe('showCard', (msg, data) => {
@@ -16,6 +24,41 @@ export default function Login() {
       setCardOpacity(1);
     }
   })
+  // 定时器中改变当前展示的card index
+  useEffect(() => {
+    if (cardOpacity === 1) {
+      console.log('opacity');
+      if (cardTimer.current === null) {
+        cardTimer.current = setInterval(() => {
+          // 拿到的始终是第一次存在链表里面的cardIndex初始值，也就是0，
+          // 所以不能在setXXX外部写判断条件，而是应该在setXXX里面进行判断，确定返回什么值
+          // if (cardIndex !== cardTitles.length - 1) {
+          //   setCardIndex(cardIndex => cardIndex + 1);
+          // } else {
+          //   clearInterval(cardTimer.current);
+          //   cardTimer.current = null;
+          // }
+          setCardIndex(cardIndex => {
+            if (cardIndex < cardTitles.length - 1) {
+              return cardIndex + 1;
+            } else {
+              clearInterval(cardTimer.current);
+              cardTimer.current = null;
+              return cardTitles.length - 1;
+            }
+          })
+        }, 5000);
+      }
+    }
+  }, [cardOpacity, cardTitles.length])
+  // card index变化的时候改变photo title和content
+  useEffect(() => {
+    setCardPhotoUrl(cardPhotoUrls[cardIndex]);
+    setCardTitle(cardTitles[cardIndex]);
+    setCardContent(cardContents[cardIndex]); 
+  }, [cardIndex, cardContents, cardTitles, cardPhotoUrls])
+  
+  /* heart */
   // heart相关状态
   const pageRef = useRef(null);
   const heartColors = ['lightcoral', 'pink', 'red', 'orange', 'yellow', 'lightgreen', 'lightblue', 'lightpurple'];
@@ -81,12 +124,16 @@ export default function Login() {
       }, stepTime);
     }
   }
-  // 组件销毁前关闭没有结束的定时器
+  // 组件销毁前关闭没有结束的heart card定时器
   useEffect(() => {
     return () => {
       if (heartAnimationTimer.current !== null) {
-        clearInterval(heartAnimationTimer);
+        clearInterval(heartAnimationTimer.current);
         heartAnimationTimer.current = null;        
+      }
+      if (cardTimer.current !== null) {
+        clearInterval(cardTimer.current);
+        cardTimer.current = null;
       }
     }
   }, [])
@@ -96,13 +143,12 @@ export default function Login() {
       <div className="card" style={{
         opacity: cardOpacity
       }}>
-        <Card/>
+        <Card cardTitle={cardTitle} cardContent={cardContent} cardPhotoUrl={cardPhotoUrl}/>
       </div>
       <div className="welcome">
         <WelcomeBoard 
-        //  & SYY!
-          title={'Welcome to World of MMY'}
-          btnInfo={'Start Roaming!'}
+          title={'遇见你之后，静谧的世界充满色彩和音韵'}
+          btnInfo={'MMY & SYY的回忆'}
         />
       </div>
       <audio ref={audioRef} src="src/assets/music/fallingyou.mp3" 
