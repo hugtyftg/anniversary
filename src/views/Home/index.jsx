@@ -7,6 +7,7 @@ import { flushSync } from 'react-dom';
 import PubSub from 'pubsub-js';
 import Card from '../../components/Card';
 import { cardTitles, cardContents } from './word';
+import { getAssetsMusicUrl } from '../../utils/fileAccessor';
 export default function Login() {
   // 音频
   const audioRef = useRef(null);
@@ -27,7 +28,6 @@ export default function Login() {
   // 定时器中改变当前展示的card index
   useEffect(() => {
     if (cardOpacity === 1) {
-      console.log('opacity');
       if (cardTimer.current === null) {
         cardTimer.current = setInterval(() => {
           // 拿到的始终是第一次存在链表里面的cardIndex初始值，也就是0，
@@ -50,13 +50,13 @@ export default function Login() {
         }, 5000);
       }
     }
-  }, [cardOpacity, cardTitles.length])
+  }, [cardOpacity])
   // card index变化的时候改变photo title和content
   useEffect(() => {
     setCardPhotoUrl(cardPhotoUrls[cardIndex]);
     setCardTitle(cardTitles[cardIndex]);
     setCardContent(cardContents[cardIndex]); 
-  }, [cardIndex, cardContents, cardTitles, cardPhotoUrls])
+  }, [cardIndex, cardPhotoUrls])
   
   /* heart */
   // heart相关状态
@@ -151,8 +151,8 @@ export default function Login() {
           btnInfo={'MMY & SYY的回忆'}
         />
       </div>
-      <audio ref={audioRef} src="src/assets/music/fallingyou.mp3" 
-      loop preload='auto'></audio>
+      {/* <audio ref={audioRef} src="src/assets/music/fallingyou.mp3" loop preload='auto'></audio> */}
+      <audio ref={audioRef} src={getAssetsMusicUrl('fallingyou.mp3')} loop preload='auto'></audio>
       {existHeart ? <Heart ref={heartRef} size={heartSize} x={heartX} y={heartY} color={heartColor}/> : ''}
     </div>
   )

@@ -1,12 +1,12 @@
 import React from 'react';
 import './index.less';
 import { FlowBorder, GradientBorder } from '..';
+import { getAssetsImgUrl } from '../../utils/fileAccessor';
 
 export default function Card({cardTitle, cardContent, cardWidth, cardPhotoUrl}) {
   let borderWidth = cardWidth ?? 600;
   let GradientBorderHeight = 100;
   let FlowBorderHeight = 400;
-
   return (
     <div className='card'>
       <div className="words">
@@ -16,7 +16,8 @@ export default function Card({cardTitle, cardContent, cardWidth, cardPhotoUrl}) 
         </GradientBorder>
       </div>
       <FlowBorder width={borderWidth} height={FlowBorderHeight} 
-      layerImgUrl={`src/assets/img/${cardPhotoUrl ?? 'photo0.jpg'}`}>
+        layerImgUrl={getAssetsImgUrl(cardPhotoUrl)}
+      >
       </FlowBorder>
     </div>
   )
