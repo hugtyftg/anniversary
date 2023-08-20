@@ -1,17 +1,17 @@
 import { Navigate } from "react-router-dom";
-import { Login } from "../views";
+import { Home } from "../views";
 const routes = [
   {
     path: '/',
-    element: <Navigate to={'/login'} />
+    element: <Navigate to={'/home'} />
   },
   {
-    path: '/login',
-    element: <Login/>
+    path: '/home',
+    element: <Home/>
   },
   {
     path: '*',
-    element: <Navigate to={'/login'} />
+    element: <Navigate to={'/home'} />
   }
 ]
 export default routes;
