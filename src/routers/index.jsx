@@ -3,7 +3,7 @@ import { Home } from "../views";
 const routes = [
   {
     path: '/',
-    element: <Navigate to={'/home'} />
+    element: <Home/>
   },
   {
     path: '/home',
