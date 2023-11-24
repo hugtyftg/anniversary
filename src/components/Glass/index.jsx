@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import React, { useRef } from 'react';
+import React from 'react';
 import './index.less';
 
 export default function Glass(props) {
